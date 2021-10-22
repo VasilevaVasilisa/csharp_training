@@ -8,23 +8,26 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
-{ 
+{
     [TestFixture]
-    public class ContactCreationTests : TestBase
-
+    public class GroupRemovalTests : TestBase
     {
+       
 
         [Test]
-        public void ContactCreationTest()
+        public void GroupRemovalTest()
         {
             OpenHomePage();
-            Login(new AccountDate("admin","secret"));
-            AddNewContact();
-            ContactDate contact = new ContactDate("Petr", "Petrov");
-            FillContactForm(contact);
-            ReturnToContactPage();
+            Login(new AccountDate("admin", "secret"));
+            GoToGroupsPage();
+            SelectGroup(1);
+            RemoveGroup();
+            ReturnToGroupPage();
             Logout();
         }
 
+      
+
     }
+    
 }
