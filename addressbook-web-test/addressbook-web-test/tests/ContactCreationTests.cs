@@ -3,9 +3,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 { 
@@ -13,17 +10,12 @@ namespace WebAddressbookTests
     public class ContactCreationTests : TestBase
 
     {
-
         [Test]
         public void ContactCreationTest()
         {
-            OpenHomePage();
-            Login(new AccountDate("admin","secret"));
-            AddNewContact();
             ContactDate contact = new ContactDate("Petr", "Petrov");
-            FillContactForm(contact);
-            ReturnToContactPage();
-            Logout();
+
+            app.Contacts.Create(contact);
         }
 
     }
