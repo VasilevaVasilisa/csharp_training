@@ -20,6 +20,7 @@ namespace WebAddressbookTests
             FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupPage();
+            manager.Auth.Logout();
             return this;
         }
         public GroupHelper Remove(int index)
@@ -28,6 +29,7 @@ namespace WebAddressbookTests
             SelectGroup(1);
             RemoveGroup();
             ReturnToGroupPage();
+            manager.Auth.Logout();
             return this;
         }
         public GroupHelper InitNewGroupCreation()

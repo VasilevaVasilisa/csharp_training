@@ -17,6 +17,7 @@ namespace WebAddressbookTests
             manager.Navigator.AddNewContact();
             FillContactForm(contact);
             ReturnToContactPage();
+            manager.Auth.Logout();
             return this;
         }
         public ContactHelper FillContactForm(ContactDate contact)
