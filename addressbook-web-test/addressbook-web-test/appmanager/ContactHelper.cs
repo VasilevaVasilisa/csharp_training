@@ -18,100 +18,75 @@ namespace WebAddressbookTests
         public ContactHelper Create(ContactDate contact)
         {
             manager.Navigator.AddNewContact();
-            SelectedGroupToContactForm(contact);
+            //SelectedGroupToContactForm(contact);
             FillContactForm(contact);
             ReturnToContactPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public ContactHelper Modify(int index, ContactDate newData)
         {
             manager.Navigator.GoToContactPage();
+            HaveContacts(); //Проверка наличия контакта
             InitContactModification(index);
             FillContactForm(newData);
             SubmitContactModification();
             ReturnToContactPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public ContactHelper Remove (int index)
         {
             manager.Navigator.GoToContactPage();
+            HaveContacts(); //Проверка наличия контакта
             SelectContact(index);
             SubmitContactRemove();
-            manager.Auth.Logout();
             return this;
         }
 
         public ContactHelper FillContactForm(ContactDate contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("middlename")).Click();
-            driver.FindElement(By.Name("middlename")).SendKeys(contact.Middlename);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            driver.FindElement(By.Name("nickname")).Click();
-            driver.FindElement(By.Name("nickname")).SendKeys(contact.Nickname);
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("middlename"), contact.Middlename);
+            Type(By.Name("lastname"), contact.Lastname);
+            Type(By.Name("nickname"), contact.Nickname);
             /* При открытии формы для выбора фото, не закрывает ее (recorder не записывает закрытие формы)
             driver.FindElement(By.Name("photo")).Click();
             */
-            driver.FindElement(By.Name("title")).Click();
-            driver.FindElement(By.Name("title")).SendKeys(contact.Title);
-            driver.FindElement(By.Name("company")).Click();
-            driver.FindElement(By.Name("company")).SendKeys(contact.Company);
-            driver.FindElement(By.Name("address")).Click();
-            driver.FindElement(By.Name("address")).SendKeys(contact.Address);
+            Type(By.Name("title"), contact.Title);
+            Type(By.Name("company"), contact.Company);
+            Type(By.Name("address"), contact.Address);
             //Telephone
-            driver.FindElement(By.Name("home")).Click();
-            driver.FindElement(By.Name("home")).SendKeys(contact.HomeTel);
-            driver.FindElement(By.Name("mobile")).Click();
-            driver.FindElement(By.Name("mobile")).SendKeys(contact.Mobile);
-            driver.FindElement(By.Name("work")).Click();
-            driver.FindElement(By.Name("work")).SendKeys(contact.WorkTel);
-            driver.FindElement(By.Name("fax")).Click();
-            driver.FindElement(By.Name("fax")).SendKeys(contact.Fax);
+            Type(By.Name("home"), contact.HomeTel);
+            Type(By.Name("mobile"), contact.Mobile);
+            Type(By.Name("work"), contact.WorkTel);
+            Type(By.Name("fax"), contact.Fax);
             //Email
-            driver.FindElement(By.Name("email")).Click();
-            driver.FindElement(By.Name("email")).SendKeys(contact.Email);
-            driver.FindElement(By.Name("email2")).Click();
-            driver.FindElement(By.Name("email2")).SendKeys(contact.Email2);
-            driver.FindElement(By.Name("email3")).Click();
-            driver.FindElement(By.Name("email3")).SendKeys(contact.Email3);
-            driver.FindElement(By.Name("homepage")).Click();
-            driver.FindElement(By.Name("homepage")).SendKeys(contact.Homepage);
+            Type(By.Name("email"), contact.Email);
+            Type(By.Name("email2"), contact.Email2);
+            Type(By.Name("email3"), contact.Email3);
+            Type(By.Name("homepage"), contact.Homepage);
             //Date Of Birth
-            driver.FindElement(By.Name("bday")).Click();
-            driver.FindElement(By.Name("bday")).SendKeys(contact.BirthDay);
-            driver.FindElement(By.Name("bmonth")).Click();
-            driver.FindElement(By.Name("bmonth")).SendKeys(contact.BirthMonth);
-            driver.FindElement(By.Name("byear")).Click();
-            driver.FindElement(By.Name("byear")).SendKeys(contact.BirthYear);
+            Type(By.Name("bday"), contact.BirthDay);
+            Type(By.Name("bmonth"), contact.BirthMonth);
+            Type(By.Name("byear"), contact.BirthYear);
             // Anniversary
-            driver.FindElement(By.Name("aday")).Click();
-            driver.FindElement(By.Name("aday")).SendKeys(contact.AnniversaryDay);
-            driver.FindElement(By.Name("amonth")).Click();
-            driver.FindElement(By.Name("amonth")).SendKeys(contact.AnniversaryMonth);
-            driver.FindElement(By.Name("ayear")).Click();
-            driver.FindElement(By.Name("ayear")).SendKeys(contact.AnniversaryYear);
- /*           try
-            {
-                driver.FindElement(By.Name("new_group")).Click();
-                driver.FindElement(By.Name("new_group")).SendKeys(contact.Group);
-            }
-            catch { }
- */
+            Type(By.Name("aday"), contact.AnniversaryDay);
+            Type(By.Name("amonth"), contact.AnniversaryMonth);
+            Type(By.Name("ayear"), contact.AnniversaryYear);
+
+            Type(By.Name("new_group"), contact.Group);
+            /*           try
+                       {
+                           driver.FindElement(By.Name("new_group")).Click();
+                           driver.FindElement(By.Name("new_group")).SendKeys(contact.Group);
+                       }
+                       catch { }
+            */
             //Secondary
-            driver.FindElement(By.Name("address2")).Click();
-            driver.FindElement(By.Name("address2")).SendKeys(contact.Address2);
-            driver.FindElement(By.Name("phone2")).Click();
-            driver.FindElement(By.Name("phone2")).SendKeys(contact.Phone2);
-            driver.FindElement(By.Name("notes")).Click();
-            driver.FindElement(By.Name("notes")).SendKeys(contact.Notes);
+            Type(By.Name("address2"), contact.Address2);
+            Type(By.Name("phone2"), contact.Phone2);
+            Type(By.Name("notes"), contact.Notes);
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
             return this;
         }
@@ -146,12 +121,19 @@ namespace WebAddressbookTests
             driver.SwitchTo().Alert().Accept();
             return this;
         }
-        public ContactHelper SelectedGroupToContactForm(ContactDate contact)
+     /*   public ContactHelper SelectedGroupToContactForm(ContactDate contact)
         {
-            driver.FindElement(By.Name("new_group")).Click();
-            driver.FindElement(By.Name("new_group")).SendKeys(contact.Group);
+            Type(By.Name("new_group"), contact.Group);
             return this;
+        }*/
+     public void HaveContacts()  //Проверка, если на странице не найден "карандашек", то в списке нет контактов. Далее создание контакта.
+        {
+            if (! IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img")))
+            {
+                Create(new ContactDate("Petr", "Petrov"));
+                
+            }
         }
-
+      
     }
 }

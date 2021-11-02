@@ -10,30 +10,30 @@ namespace WebAddressbookTests
     {
         private string firstname;
         private string lastname;
-        private string middlename = "";
-        private string nickname = "";
+        private string middlename = null;
+        private string nickname = null;
 //      private string photo = "";
-        private string title = "";
-        private string company = "";
-        private string address = "";
-        private string homeTel = "";
-        private string mobile = "";
-        private string workTel = "";
-        private string fax = "";
-        private string email = "";
-        private string email2 = "";
-        private string email3 = "";
-        private string homepage = "";
-        private string birthDay = "";
-        private string birthMonth = "";
-        private string birthYear = "";
-        private string anniversaryDay = "";
-        private string anniversaryMonth = "";
-        private string anniversaryYear = "";
-        private string group = "";
-        private string address2 = "";
-        private string phone2 = "";
-        private string notes = "";
+        private string title = null;
+        private string company = null;
+        private string address = null;
+        private string homeTel = null;
+        private string mobile = null;
+        private string workTel = null;
+        private string fax = null;
+        private string email = null;
+        private string email2 = null;
+        private string email3 = null;
+        private string homepage = null;
+        private string birthDay = null;
+        private string birthMonth = null;
+        private string birthYear = null;
+        private string anniversaryDay = null;
+        private string anniversaryMonth = null;
+        private string anniversaryYear = null;
+        private string group = null;
+        private string address2 = null;
+        private string phone2 = null;
+        private string notes = null;
 
         public ContactDate(string firstname, string lastname) 
         {

@@ -20,29 +20,28 @@ namespace WebAddressbookTests
             FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public GroupHelper Modify(int index ,GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
+            HaveGroups(); //Проверка наличия группы
             SelectGroup(index);
             InitGroupModification();
             FillGroupForm(newData);
             SubmitGroupModification();
             ReturnToGroupPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
+            HaveGroups(); //Проверка наличия группы
             SelectGroup(index);
             RemoveGroup();
             ReturnToGroupPage();
-            manager.Auth.Logout();
             return this;
         }
         public GroupHelper InitNewGroupCreation()
@@ -53,15 +52,9 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Click();
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
         public GroupHelper SubmitGroupCreation()
@@ -93,6 +86,13 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.Name("update")).Click();
             return this;
+        }
+        public void HaveGroups() //Проверка наличия группы
+        {
+            if (!IsElementPresent(By.Name("selected[]")))
+            {
+                Create(new GroupData("group4"));
+            }
         }
     }
 }
