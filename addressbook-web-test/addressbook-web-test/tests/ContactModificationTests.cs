@@ -16,6 +16,8 @@ namespace WebAddressbookTests
         public void ContactModificationTest()
         {
             ContactDate newData = new ContactDate("Maria", "Petrova");
+
+            app.Contacts.SeachContacts(); // если контакт не создастся, то следующий метод модификации не выполнится
             app.Contacts.Modify(1, newData);
         }
     }

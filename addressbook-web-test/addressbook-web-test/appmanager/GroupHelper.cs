@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using System.Collections;
 
 
 namespace WebAddressbookTests
@@ -25,8 +26,7 @@ namespace WebAddressbookTests
 
         public GroupHelper Modify(int index ,GroupData newData)
         {
-            manager.Navigator.GoToGroupsPage();
-            HaveGroups(); //Проверка наличия группы
+            manager.Navigator.GoToGroupsPage(); 
             SelectGroup(index);
             InitGroupModification();
             FillGroupForm(newData);
@@ -38,7 +38,6 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
-            HaveGroups(); //Проверка наличия группы
             SelectGroup(index);
             RemoveGroup();
             ReturnToGroupPage();
@@ -87,12 +86,39 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("update")).Click();
             return this;
         }
-        public void HaveGroups() //Проверка наличия группы
+        public void SearchGroups() //если группы нет, то создать ее.
         {
-            if (!IsElementPresent(By.Name("selected[]")))
+            manager.Navigator.GoToGroupsPage();
+
+            if (HaveGroups())
             {
-                Create(new GroupData("group4"));
             }
+            Create(new GroupData("group4"));
+                 if (HaveGroups())
+                 {
+
+                 }
+        }
+
+        public bool HaveGroups() // существование группы
+        {
+            return IsElementPresent(By.Name("selected[]"));
+        }
+         
+        public int CountingGroups() //подсчет групп
+        {
+            int result = 0;
+            bool b=true;
+            int count = 0;
+            manager.Navigator.GoToGroupsPage();
+            while (b)
+            {
+                result = count;
+                count++;
+                b = IsElementPresent(By.XPath("//div[@id='content']/form/span[" + count + "]"));
+
+            }
+            return result; 
         }
     }
 }

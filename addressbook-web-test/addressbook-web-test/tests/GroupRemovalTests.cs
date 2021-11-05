@@ -12,8 +12,15 @@ namespace WebAddressbookTests
         [Test]
         public void GroupRemovalTest()
         {
+            int countP;
+            int countL;
+
+            app.Groups.SearchGroups();
+            countP = app.Groups.CountingGroups(); //подсчет до удаления
             app.Groups.Remove(1);
-           // app.Auth.Logout();
+            countL = app.Groups.CountingGroups();//подсчет после удаления
+
+            Assert.AreEqual(countP, countL + 1); // группа удалена, если список групп уменьшился
         }
 
       

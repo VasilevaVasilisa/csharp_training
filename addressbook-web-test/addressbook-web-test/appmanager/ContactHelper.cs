@@ -27,7 +27,6 @@ namespace WebAddressbookTests
         public ContactHelper Modify(int index, ContactDate newData)
         {
             manager.Navigator.GoToContactPage();
-            HaveContacts(); //Проверка наличия контакта
             InitContactModification(index);
             FillContactForm(newData);
             SubmitContactModification();
@@ -38,7 +37,6 @@ namespace WebAddressbookTests
         public ContactHelper Remove (int index)
         {
             manager.Navigator.GoToContactPage();
-            HaveContacts(); //Проверка наличия контакта
             SelectContact(index);
             SubmitContactRemove();
             return this;
@@ -126,14 +124,38 @@ namespace WebAddressbookTests
             Type(By.Name("new_group"), contact.Group);
             return this;
         }*/
-     public void HaveContacts()  //Проверка, если на странице не найден "карандашек", то в списке нет контактов. Далее создание контакта.
+     public void SeachContacts()  //Проверка, если на странице не найден "карандашек", то в списке нет контактов. Далее создание контакта.
         {
-            if (! IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img")))
+            manager.Navigator.GoToContactPage();
+            if (!HaveContacts())
             {
+                manager.Navigator.AddNewContact();
                 Create(new ContactDate("Petr", "Petrov"));
-                
+                if(!HaveContacts())
+                {
+
+                }
             }
         }
-      
+        public bool HaveContacts() //Существование контакта
+        {
+            return IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+        }
+
+        public int CountingContacts() //подсчет контактов
+        {
+            int result = 0;
+            bool b = true;
+            int count = 0;
+            manager.Navigator.GoToContactPage();
+            while (b)
+            {
+                result = count;
+                count++;
+                b = IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr["+count+" +1]/td[8]/a/img"));
+
+            }
+            return result;
+        }
     }
 }

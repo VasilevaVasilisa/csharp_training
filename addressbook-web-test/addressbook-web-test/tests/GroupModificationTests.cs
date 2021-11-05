@@ -12,11 +12,14 @@ namespace WebAddressbookTests
         [Test]
         public void GroupModificationTest()
         {
+
             GroupData newData = new GroupData("group2");
             newData.Header = "ddd";
             newData.Footer = "sss";
 
+            app.Groups.SearchGroups(); //если группа не создастся, то следующий метод модификации не выполнится
             app.Groups.Modify(1, newData);
+
         }
     }
 }
