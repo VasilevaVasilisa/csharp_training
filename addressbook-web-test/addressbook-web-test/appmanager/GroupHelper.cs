@@ -59,6 +59,7 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            groupCash = null;
             return this;
         }
         public GroupHelper ReturnToGroupPage()
@@ -68,12 +69,13 @@ namespace WebAddressbookTests
         }
         public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + index + "]/input")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + (index +1)+ "]/input")).Click();
             return this;
         }
         public GroupHelper RemoveGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            groupCash = null;
             return this;
         }
         public GroupHelper InitGroupModification()
@@ -84,41 +86,57 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            groupCash = null;
             return this;
         }
-        public void SearchGroups() //если группы нет, то создать ее.
-        {
-            manager.Navigator.GoToGroupsPage();
 
-            if (HaveGroups())
-            {
-            }
-            Create(new GroupData("group4"));
-                 if (HaveGroups())
+        /*      public bool HaveGroups() // существование группы
+              {
+                  manager.Navigator.GoToGroupsPage();
+                  return IsElementPresent(By.Name("selected[]"));
+              }*/
+
+        /*     public int CountingGroups() //подсчет групп
+             {
+                 int result = 0;
+                 bool b=true;
+                 int count = 0;
+                 manager.Navigator.GoToGroupsPage();
+                 while (b)
                  {
+                     result = count;
+                     count++;
+                     b = IsElementPresent(By.XPath("//div[@id='content']/form/span[" + count + "]"));
 
                  }
-        }
-
-        public bool HaveGroups() // существование группы
+                 return result; 
+             }
+        */
+        private List<GroupData> groupCash = null;
+        public List<GroupData> GetGroupList()
         {
-            return IsElementPresent(By.Name("selected[]"));
-        }
-         
-        public int CountingGroups() //подсчет групп
-        {
-            int result = 0;
-            bool b=true;
-            int count = 0;
-            manager.Navigator.GoToGroupsPage();
-            while (b)
+            if (groupCash == null)
             {
-                result = count;
-                count++;
-                b = IsElementPresent(By.XPath("//div[@id='content']/form/span[" + count + "]"));
+                groupCash = new List<GroupData>();
+                manager.Navigator.GoToGroupsPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
 
+                foreach (IWebElement element in elements)
+                {
+                    GroupData group = new GroupData(element.Text)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    };
+                    
+                    groupCash.Add(group);
+                }
             }
-            return result; 
+            return new List<GroupData>(groupCash); 
         }
+        public int GetGroupCount()
+        {
+            return driver.FindElements(By.CssSelector("span.group")).Count;
+        }
+
     }
 }

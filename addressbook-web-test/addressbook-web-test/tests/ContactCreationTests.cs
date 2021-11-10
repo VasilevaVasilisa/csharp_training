@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -13,15 +14,25 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            int countP;
+    /*        int countP;
             int countL;
+    */
             ContactDate contact = new ContactDate("Petr", "Petrov");
 
-            countP = app.Contacts.CountingContacts(); //подсчет до создания
+            // countP = app.Contacts.CountingContacts(); //подсчет до создания
+            List<ContactDate> oldContactsList = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
-            countL = app.Contacts.CountingContacts(); //подсчет после создания
+            Assert.AreEqual(oldContactsList.Count + 1, app.Contacts.GetContactCount());
+            List<ContactDate> newContactsList = app.Contacts.GetContactList();
+            // countL = app.Contacts.CountingContacts(); //подсчет после создания
 
-            Assert.AreEqual(countP, countL - 1); //проверка что контакт создался, если список контактов увеличился
+            oldContactsList.Add(contact);
+            oldContactsList.Sort();
+            newContactsList.Sort();
+
+            Assert.AreEqual(oldContactsList.Count , newContactsList.Count);
+            Assert.AreEqual(oldContactsList, newContactsList);
+            //    Assert.AreEqual(countP, countL - 1); //проверка что контакт создался, если список контактов увеличился
         }
 
     }

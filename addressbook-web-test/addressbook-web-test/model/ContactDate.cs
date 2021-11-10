@@ -6,285 +6,62 @@ using System.Threading.Tasks;
 
 namespace WebAddressbookTests
 {
-   public class ContactDate
+   public class ContactDate : IEquatable<ContactDate>, IComparable<ContactDate>
     {
-        private string firstname;
-        private string lastname;
-        private string middlename = null;
-        private string nickname = null;
-//      private string photo = "";
-        private string title = null;
-        private string company = null;
-        private string address = null;
-        private string homeTel = null;
-        private string mobile = null;
-        private string workTel = null;
-        private string fax = null;
-        private string email = null;
-        private string email2 = null;
-        private string email3 = null;
-        private string homepage = null;
-        private string birthDay = null;
-        private string birthMonth = null;
-        private string birthYear = null;
-        private string anniversaryDay = null;
-        private string anniversaryMonth = null;
-        private string anniversaryYear = null;
-        private string group = null;
-        private string address2 = null;
-        private string phone2 = null;
-        private string notes = null;
 
+        private string group = null;
+       
         public ContactDate(string firstname, string lastname) 
         {
-            this.firstname = firstname;
-            this.lastname = lastname;
+           Firstname = firstname;
+           Lastname = lastname;
         }
 
-        public string Firstname
-        {
-            get
-            {
-                return firstname;
-            }
-            set
-            {
-                firstname = value;
-            }
-        }
+        public string Firstname { get; set; }
+       
 
-        public string Lastname
-        {
-            get
-            {
-                return lastname;
-            }
-            set
-            {
-                lastname = value;
-            }
-        }
+        public string Lastname { get; set; }
+       
+        public string Middlename { get; set; }
+        
+        public string Nickname { get; set; }
 
-        public string Middlename
-        {
-            get
-            {
-                return middlename;
-            }
-            set
-            {
-                middlename = value;
-            }
-        }
-        public string Nickname
-        {
-            get
-            {
-                return nickname;
-            }
-            set
-            {
-                nickname = value;
-            }
-        }
- /*       public string Photo
-        {
-            get
-            {
-                return photo;
-            }
-            set
-            {
-                photo = value;
-            }
-        }*/
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                title = value;
-            }
-        }
-        public string Company
-        {
-            get
-            {
-                return company;
-            }
-            set
-            {
-                company = value;
-            }
-        }
-        public string Address
-        {
-            get
-            {
-                return address;
-            }
-            set
-            {
-                address = value;
-            }
-        }
-        public string HomeTel
-        {
-            get
-            {
-                return homeTel;
-            }
-            set
-            {
-                homeTel = value;
-            }
-        }
-        public string Mobile
-        {
-            get
-            {
-                return mobile;
-            }
-            set
-            {
-                mobile = value;
-            }
-        }
-        public string WorkTel
-        {
-            get
-            {
-                return workTel;
-            }
-            set
-            {
-                workTel = value;
-            }
-        }
-        public string Fax
-        {
-            get
-            {
-                return fax;
-            }
-            set
-            {
-                fax = value;
-            }
-        }
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                email = value;
-            }
-        }
-        public string Email2
-        {
-            get
-            {
-                return email2;
-            }
-            set
-            {
-                email2 = value;
-            }
-        }
-        public string Email3
-        {
-            get
-            {
-                return email3;
-            }
-            set
-            {
-                email3 = value;
-            }
-        }
-        public string Homepage
-        {
-            get
-            {
-                return homepage;
-            }
-            set
-            {
-                homepage = value;
-            }
-        }
-        public string BirthDay
-        {
-            get
-            {
-                return birthDay;
-            }
-            set
-            {
-                birthDay = value;
-            }
-        }
-        public string BirthMonth
-        {
-            get
-            {
-                return birthMonth;
-            }
-            set
-            {
-                birthMonth = value;
-            }
-        }
-        public string BirthYear
-        {
-            get
-            {
-                return birthYear;
-            }
-            set
-            {
-                birthYear = value;
-            }
-        }
-        public string AnniversaryDay
-        {
-            get
-            {
-                return anniversaryDay;
-            }
-            set
-            {
-                anniversaryDay = value;
-            }
-        }
-        public string AnniversaryMonth
-        {
-            get
-            {
-                return anniversaryMonth;
-            }
-            set
-            {
-                anniversaryMonth = value;
-            }
-        }
-        public string AnniversaryYear
-        {
-            get
-            {
-                return anniversaryYear;
-            }
-            set
-            {
-                anniversaryYear = value;
-            }
-        }
+        /*public string Photo  { get; set; }*/
+              
+        public string Title { get; set; }
+   
+        public string Company { get; set; }
+       
+        public string Address { get; set; }
+       
+        public string HomeTel { get; set; }
+        
+        public string Mobile { get; set; }
+       
+        public string WorkTel { get; set; }
+      
+        public string Fax { get; set; }
+       
+        public string Email { get; set; }
+       
+        public string Email2 { get; set; }
+     
+        public string Email3 { get; set; }
+        
+        public string Homepage { get; set; }
+
+        public string BirthDay { get; set; }
+        public string BirthMonth { get; set; }
+      
+        public string BirthYear { get; set; }
+        
+        public string AnniversaryDay { get; set; }
+        
+        public string AnniversaryMonth { get; set; }
+       
+        public string AnniversaryYear { get; set; }
+        public string Id { get; set; }
+
         public string Group
         {
             get
@@ -296,38 +73,52 @@ namespace WebAddressbookTests
                 group = value;
             }
         }
-        public string Address2
+        public string Address2 { get; set; }
+       
+        public string Phone2 { get; set; }
+        
+        public string Notes { get; set; }
+
+        public bool Equals(ContactDate other)
         {
-            get
+            if (Object.ReferenceEquals(other, null))
             {
-                return address2;
+                return false;
             }
-            set
+            if (Object.ReferenceEquals(this, other))
             {
-                address2 = value;
+                return true;
             }
+            return Firstname == other.Firstname && Lastname == other.Lastname;
+
         }
-        public string Phone2
+        public override int GetHashCode()
         {
-            get
-            {
-                return phone2;
-            }
-            set
-            {
-                phone2 = value;
-            }
+           
+            return  Lastname.GetHashCode() + Firstname.GetHashCode(); 
         }
-        public string Notes
+        public override string ToString()
         {
-            get
-            {
-                return notes;
-            }
-            set
-            {
-                notes = value;
-            }
+            string[] arrayContactInfo = new string[] { Firstname , Lastname };
+
+            return string.Join(" ", arrayContactInfo);
         }
+        public int CompareTo(ContactDate other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return 1;
+            }
+
+            int compareContact = Lastname.CompareTo(other.Lastname);
+
+            if(compareContact != 0)
+            {
+                return compareContact;
+            }
+
+            return Firstname.CompareTo(other.Firstname); 
+        }
+
     }
 }

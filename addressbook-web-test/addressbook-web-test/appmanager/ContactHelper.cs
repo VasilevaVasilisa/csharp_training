@@ -39,6 +39,7 @@ namespace WebAddressbookTests
             manager.Navigator.GoToContactPage();
             SelectContact(index);
             SubmitContactRemove();
+            manager.Navigator.GoToContactPage();
             return this;
         }
 
@@ -86,6 +87,7 @@ namespace WebAddressbookTests
             Type(By.Name("phone2"), contact.Phone2);
             Type(By.Name("notes"), contact.Notes);
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            contactCash = null;
             return this;
         }
         public ContactHelper ReturnToContactPage()
@@ -96,20 +98,21 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + " + 1]/td[1]")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index+1) + " + 1]/td[1]")).Click();
             return this;
         }
 
         public ContactHelper InitContactModification(int index)
         {
             // driver.FindElement(By.XPath("//img[@alt='Edit']")).Click();
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + " + 1]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index+1) + " + 1]/td[8]/a/img")).Click();
             return this;
         }
 
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCash = null;
             return this;
         }
 
@@ -117,45 +120,77 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
+            contactCash = null;
             return this;
         }
-     /*   public ContactHelper SelectedGroupToContactForm(ContactDate contact)
+        /*   public ContactHelper SelectedGroupToContactForm(ContactDate contact)
+           {
+               Type(By.Name("new_group"), contact.Group);
+               return this;
+           }*/
+        /*   public void SeachContacts()  //Проверка, если на странице не найден "карандашек", то в списке нет контактов. Далее создание контакта.
+           {
+               manager.Navigator.GoToContactPage();
+               if (!HaveContacts())
+               {
+                   manager.Navigator.AddNewContact();
+                   Create(new ContactDate("Petr", "Petrov"));
+               }
+           }
+           public bool HaveContacts() //Существование контакта
+           {
+               return IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+           }
+
+           public int CountingContacts() //подсчет контактов
+           {
+               int result = 0;
+               bool b = true;
+               int count = 0;
+               manager.Navigator.GoToContactPage();
+               while (b)
+               {
+                   result = count;
+                   count++;
+                   b = IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr["+count+" +1]/td[8]/a/img"));
+
+               }
+               return result;
+           }*/
+        List<ContactDate> contactCash = null;
+        public List<ContactDate> GetContactList()
         {
-            Type(By.Name("new_group"), contact.Group);
-            return this;
-        }*/
-     public void SeachContacts()  //Проверка, если на странице не найден "карандашек", то в списке нет контактов. Далее создание контакта.
-        {
-            manager.Navigator.GoToContactPage();
-            if (!HaveContacts())
+            if (contactCash == null)
             {
-                manager.Navigator.AddNewContact();
-                Create(new ContactDate("Petr", "Petrov"));
-                if(!HaveContacts())
+                manager.Navigator.GoToContactPage();
+
+                contactCash = new List<ContactDate>();
+
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name='entry']"));
+
+                int i = 2;
+
+                foreach (IWebElement element in elements)
                 {
+                    string LasttName = driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + i + "]/td[2]")).Text;
+                    string FirsttName = driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + i + "]/td[3]")).Text;
+
+                    ContactDate contact = new ContactDate(FirsttName, LasttName)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    };
+                    contactCash.Add(contact);
+                    i++;
 
                 }
-            }
-        }
-        public bool HaveContacts() //Существование контакта
-        {
-            return IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
-        }
-
-        public int CountingContacts() //подсчет контактов
-        {
-            int result = 0;
-            bool b = true;
-            int count = 0;
-            manager.Navigator.GoToContactPage();
-            while (b)
-            {
-                result = count;
-                count++;
-                b = IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr["+count+" +1]/td[8]/a/img"));
 
             }
-            return result;
+            return new List<ContactDate>(contactCash);
         }
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
+        }
+
     }
 }
