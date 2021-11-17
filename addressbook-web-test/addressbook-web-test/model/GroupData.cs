@@ -12,7 +12,7 @@ namespace WebAddressbookTests
 
         public GroupData(string name)
         {
-            Name = name;  //испольщуем свойство
+            Name = name;  //используем свойство
         }
 
         public string Name { get; set; } //поля создаются автоматически
@@ -40,7 +40,7 @@ namespace WebAddressbookTests
         }
         public override string ToString()
         {
-            return "name = " + Name;
+            return "name = " + Name + "header = " + Header + "footer = " + Footer;
         }
         public int CompareTo(GroupData other)
         {

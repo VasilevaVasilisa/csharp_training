@@ -10,12 +10,28 @@ namespace WebAddressbookTests
     [TestFixture]
     class ContactModificationTests : AuthTestBase
     {
-        
 
-        [Test]
-        public void ContactModificationTest()
+        public static IEnumerable<ContactDate> RandomContactDataProvider() //метод для создания контактов с рандомными данными
         {
-            ContactDate newData = new ContactDate("Maria", "Petrova");
+            List<ContactDate> contacts = new List<ContactDate>();
+
+            for (int i = 0; i < 5; i++) // генерация 5 тестовых наборов
+            {
+                contacts.Add(new ContactDate(GeneratorRandomString(30), GeneratorRandomString(40))
+                {
+                    Address = GeneratorRandomString(100)
+
+                });
+
+            }
+            return contacts;
+        }
+
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void ContactModificationTest(ContactDate newData)
+        {
+           
+            //ContactDate newData = new ContactDate("Maria", "Petrova"); 
 
             List<ContactDate> oldContactsList = app.Contacts.GetContactList();
 

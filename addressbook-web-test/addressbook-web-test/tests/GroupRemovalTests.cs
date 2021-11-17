@@ -10,19 +10,32 @@ namespace WebAddressbookTests
     [TestFixture]
     public class GroupRemovalTests : AuthTestBase
     {
-        [Test]
-        public void GroupRemovalTest()
+        public static IEnumerable<GroupData> RandomGroupDataProvider() //метод для создания групп с рандомными данными
+        {
+            List<GroupData> groups = new List<GroupData>();
+
+            for (int i = 0; i < 5; i++) // генерация 5 тестовых наборов
+            {
+                groups.Add(new GroupData(GeneratorRandomString(30)) //max длина строки
+                {
+                    Header = GeneratorRandomString(100),
+                    Footer = GeneratorRandomString(100)
+                });
+
+            }
+            return groups;
+        }
+        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public void GroupRemovalTest(GroupData group)
         {
             /*      int countP;
                     int countL;
             */
 
-
             List<GroupData> oldGroupList = app.Groups.GetGroupList();
 
             if (oldGroupList.Count == 0)
             {
-                GroupData group = new GroupData("group4");
                 app.Groups.Create(group);
                 oldGroupList.Add(group);
             }
@@ -41,10 +54,10 @@ namespace WebAddressbookTests
 
       //      Console.WriteLine("group = " + newGroupList[0].Id, "toBeRemoved = " + toBeRemoved.Id);
 
-            foreach (GroupData group in newGroupList)
+            foreach (GroupData group_ in newGroupList)
             {
               
-                Assert.AreNotEqual(group.Id, toBeRemoved.Id);
+                Assert.AreNotEqual(group_.Id, toBeRemoved.Id);
                 
             }
             

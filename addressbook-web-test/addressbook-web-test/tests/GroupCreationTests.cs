@@ -11,15 +11,31 @@ namespace WebAddressbookTests
     [TestFixture]
     public class GroupCreationTests : AuthTestBase
     {
-        [Test]
-        public void GroupCreationTest()
+        public static IEnumerable<GroupData> RandomGroupDataProvider() //метод для создания групп с рандомными данными
+        {
+            List<GroupData> groups = new List<GroupData>();
+
+            for(int i = 0; i<5; i++) // генерация 5 тестовых наборов
+            {
+                groups.Add(new GroupData(GeneratorRandomString(30)) //max длина строки
+                { Header = GeneratorRandomString(100), 
+                  Footer = GeneratorRandomString(100)
+                });
+                
+            }    
+            return groups;
+        }
+
+        [Test, TestCaseSource("RandomGroupDataProvider")] //чтобы привязать тест к генератору , TestCaseSource - использование внешнего источника тестовых данных
+
+        public void GroupCreationTest(GroupData group) //добавили параметр
         {
            /* int countP;
             int countL;
            */
-            GroupData group = new GroupData("group2");
+       /*     GroupData group = new GroupData("group2");
             group.Header = "ddd";
-            group.Footer = "sss";
+            group.Footer = "sss";*/
 
           // countP = app.Groups.CountingGroups();
            List<GroupData> oldGroupList = app.Groups.GetGroupList();
@@ -37,12 +53,12 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroupList, newGroupList);
         }
 
-        [Test]
-        public void EmptyGroupCreationTest()
+ /*       [Test] Теперь пустые тестовые даные будут генерироваться в генераторе 
+          public void EmptyGroupCreationTest()
         {
-    /*      int countP;
-            int countL;
-    */
+           // int countP;
+          //  int countL;
+   
             GroupData group = new GroupData("");
             group.Header = "";
             group.Footer = "";
@@ -61,7 +77,8 @@ namespace WebAddressbookTests
             // Assert.AreEqual(countP, countL - 1); //группа создана, если список групп увеличился
             Assert.AreEqual(oldGroupList.Count, newGroupList.Count);
             Assert.AreEqual(oldGroupList, newGroupList);
-        }
+        }*/
+    
 
         [Test]
         public void BadNameGroupCreationTest()

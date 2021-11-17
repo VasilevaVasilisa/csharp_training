@@ -19,6 +19,22 @@ namespace WebAddressbookTests
             app = ApplicationManager.GetInstance();
 
         }
-       
+
+        public static Random rnd = new Random(); //генрация случайных чисел
+
+        public static string GeneratorRandomString(int max) //метод для генерации случайных строк
+        {
+            int l = Convert.ToInt32(rnd.NextDouble() * max); // генерация числа в диапозоне от 0 до max, с преобрахование в int
+            StringBuilder builder = new StringBuilder();
+
+            for(int i = 0; i<l; i++) //генерация случайных символов
+            {
+               builder.Append(Convert.ToChar(Convert.ToInt32(rnd.NextDouble() + 223 + 32)));  // 223 , 32 коды символов в соответствии таблицей ASCII, символы меня 32 не печатные
+                                                                                              //конвертируем сначала в целое число , потом в символ 
+                                                                                             // Добавить в builder с помощью Append
+            }
+            return builder.ToString(); //
+        }
+
     }
 }

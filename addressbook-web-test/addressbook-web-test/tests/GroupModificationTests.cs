@@ -10,14 +10,29 @@ namespace WebAddressbookTests
     [TestFixture]
     public class GroupModificationTests : AuthTestBase
     {
-        [Test]
-        public void GroupModificationTest()
+        public static IEnumerable<GroupData> RandomGroupDataProvider() //метод для создания групп с рандомными данными
+        {
+            List<GroupData> groups = new List<GroupData>();
+
+            for (int i = 0; i < 5; i++) // генерация 5 тестовых наборов
+            {
+                groups.Add(new GroupData(GeneratorRandomString(30)) //max длина строки
+                {
+                    Header = GeneratorRandomString(100),
+                    Footer = GeneratorRandomString(100)
+                });
+
+            }
+            return groups;
+        }
+
+        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public void GroupModificationTest(GroupData newData)
         {
 
-            GroupData newData = new GroupData("group2");
+          /*  GroupData newData = new GroupData("group2");
             newData.Header = "ddd";
-            newData.Footer = "sss";
-
+            newData.Footer = "sss";*/
 
             List<GroupData> oldGroupList = app.Groups.GetGroupList();
 

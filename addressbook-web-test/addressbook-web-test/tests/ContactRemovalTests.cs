@@ -10,8 +10,24 @@ namespace WebAddressbookTests
     [TestFixture]
    public class ContactRemovalTests : AuthTestBase
     {
-        [Test]
-        public void ContactRemovalTest()
+        public static IEnumerable<ContactDate> RandomContactDataProvider() //метод для создания контактов с рандомными данными
+        {
+            List<ContactDate> contacts = new List<ContactDate>();
+
+            for (int i = 0; i < 5; i++) // генерация 5 тестовых наборов
+            {
+                contacts.Add(new ContactDate(GeneratorRandomString(30), GeneratorRandomString(40))
+                {
+                    Address = GeneratorRandomString(100)
+
+                });
+
+            }
+            return contacts;
+        }
+
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void ContactRemovalTest(ContactDate contact)
         {
 /*           int countP;
             int countL;
@@ -22,7 +38,7 @@ namespace WebAddressbookTests
 
             if(oldContactsList.Count == 0)
             {
-                ContactDate contact = new ContactDate("Petr", "Petrov");
+               // ContactDate contact = new ContactDate("Petr", "Petrov");
                 app.Contacts.Create(contact);
                 oldContactsList.Add(contact);
             }
@@ -42,9 +58,9 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldContactsList.Count, newContactsList.Count);
             Assert.AreEqual(oldContactsList, newContactsList);
 
-            foreach (ContactDate contact in newContactsList)
+            foreach (ContactDate contact_ in newContactsList)
             {
-                Assert.AreNotEqual(contact.Id, toBeRemoved.Id);
+                Assert.AreNotEqual(contact_.Id, toBeRemoved.Id);
             }
 
             //Assert.AreEqual(countP, countL + 1); //проверка что контакт удалился, если список контактов уменьшился
