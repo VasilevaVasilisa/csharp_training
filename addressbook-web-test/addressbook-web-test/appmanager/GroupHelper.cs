@@ -129,6 +129,25 @@ namespace WebAddressbookTests
                     };
                     
                     groupCash.Add(group);
+
+
+/*                   Для работы данного кода, нужно изменить  (element.Text) на null. Предназначен для оптимизации 
+ *                   
+                    string allGroupNames = driver.FindElement(By.CssSelector("div#content form")).Text; //получение текста из формы 
+                    string[] parts = allGroupNames.Split('\n'); //получение названий всех групп
+                    int shift = groupCash.Count - parts.Length; //находим сдвиг (для групп с пустым именем) насколько в кеше правильных групп больше , чем в тех которые получили в parts
+                    for (int i = 0; i < groupCash.Count; i++)
+                    {
+                        if (i < shift)
+                        {
+                            groupCash[i].Name = "";  //пустое имя 
+                        }
+                        else
+                        {
+                            groupCash[i].Name = parts[i-shift].Trim(); //Trim убирает лишние пробелы и переводы строк
+                        }
+                       
+                    }*/
                 }
             }
             return new List<GroupData>(groupCash); 

@@ -15,6 +15,7 @@ namespace WebAddressbookTests
         {
 
         }
+
         public ContactHelper Create(ContactDate contact)
         {
             manager.Navigator.AddNewContact();
@@ -106,6 +107,10 @@ namespace WebAddressbookTests
         {
             // driver.FindElement(By.XPath("//img[@alt='Edit']")).Click();
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index+1) + " + 1]/td[8]/a/img")).Click();
+
+            //еще один вариант нажать на кнопку редактирования
+           /* driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a")).Click();*/
             return this;
         }
 
@@ -192,5 +197,84 @@ namespace WebAddressbookTests
             return driver.FindElements(By.CssSelector("tr[name='entry']")).Count;
         }
 
+        public ContactDate GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.OpenHomePage();
+
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td")); //сохраняем ячейки таблицы
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string allEmails = cells[4].Text;
+            string allPhones = cells[5].Text;
+
+            return new ContactDate(firstName, lastName)
+            {
+               Address = address,
+               AllPhones = allPhones,
+               AllEmails = allEmails
+            };
+
+        }
+
+        public ContactDate GetContactInformationFromEditForm(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            InitContactModification(0);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value"); //получение значения из формы редактирования по полю
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+
+            string homeTel = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobileTel = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workTel = driver.FindElement(By.Name("work")).GetAttribute("value");
+
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
+            return new ContactDate(firstName, lastName) 
+            { 
+                Address = address,
+                HomeTel = homeTel,
+                Mobile = mobileTel,
+                WorkTel = workTel,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3,
+            };
+        }
+        public string GetContactInformationFromDetailsPage(int index)
+        {
+            manager.Navigator.OpenHomePage();
+            InitContactDetails(0);
+            string details = driver.FindElement(By.CssSelector("div#content")).Text;
+
+              details  =  details.Replace(" ", "").Replace("H:", "").Replace("M:", "").Replace("W:", "").
+                        Replace("-", "").Replace("(", "").Replace(")", "").Trim();
+
+            return details;
+        }
+
+        public ContactHelper InitContactDetails(int index) //переход на страницу с детальной информацией контакта 
+        {
+            driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).Click();
+            return this;
+        }
+
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.OpenHomePage();
+
+            string numberOfResalts = driver.FindElement(By.CssSelector("span#search_count")).Text;
+
+            return Int32.Parse(numberOfResalts);
+
+            // Нахождение результата поиска контактов с помощью регулярного выражения 
+         /*  string text = driver.FindElement(By.TagName("label")).Text;
+           Match m = new Regex(@"\d+").Match(text); //создает специальный объект, регуляное выражение извлекает все цифры
+           return Int32.Parse(m.Value); //значение m,  которое извлекли из строки сохраняем в int*/
+                                                     
+        }
     }
 }

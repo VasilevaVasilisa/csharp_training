@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WebAddressbookTests
@@ -10,7 +11,9 @@ namespace WebAddressbookTests
     {
 
         private string group = null;
-       
+        private string allPhones;
+        private string allEmails;
+
         public ContactDate(string firstname, string lastname) 
         {
            Firstname = firstname;
@@ -60,6 +63,45 @@ namespace WebAddressbookTests
         public string AnniversaryMonth { get; set; }
        
         public string AnniversaryYear { get; set; }
+
+        public string AllPhones 
+        {
+            get
+            {
+                if(allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (CleanUp(HomeTel) + CleanUp(Mobile) + CleanUp(WorkTel)).Trim();
+                }
+            }
+            set
+            {
+                allPhones = value;
+            }
+        }
+
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                else
+                {
+                    return (CleanUp(Email) + CleanUp(Email2) + CleanUp(Email3)).Trim();
+                } 
+            }
+            set
+            {
+                allEmails = value;
+            }
+        }
+
         public string Id { get; set; }
 
         public string Group
@@ -120,5 +162,15 @@ namespace WebAddressbookTests
             return Firstname.CompareTo(other.Firstname); 
         }
 
+        private string CleanUp(string parameters)
+        {
+            if (parameters == null || parameters == "")
+            {
+                return "";
+            }
+           return parameters.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n"; //замена символов 
+         //  return Regex.Replace(phone, "[ -()]","") + "\r\n";
+        }
+        
     }
 }
