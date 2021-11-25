@@ -29,7 +29,7 @@ namespace WebAddressbookTests
 
             for(int i = 0; i<l; i++) //генерация случайных символов
             {
-               builder.Append(Convert.ToChar(Convert.ToInt32(rnd.NextDouble() + 223 + 32)));  // 223 , 32 коды символов в соответствии таблицей ASCII, символы меня 32 не печатные
+               builder.Append(Convert.ToChar(Convert.ToInt32(rnd.NextDouble() + 65 + 32)));  // 223(65 только латинский, цифры, спец символы) , 32 коды символов в соответствии таблицей ASCII, символы меня 32 не печатные
                                                                                               //конвертируем сначала в целое число , потом в символ 
                                                                                              // Добавить в builder с помощью Append
             }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 
@@ -26,7 +30,38 @@ namespace WebAddressbookTests
             return groups;
         }
 
-        [Test, TestCaseSource("RandomGroupDataProvider")] //чтобы привязать тест к генератору , TestCaseSource - использование внешнего источника тестовых данных
+        public static IEnumerable<GroupData> GroupDataFromCsvFile() //метод для создания групп с рандомными данными из ФАЙЛА CSV (чтнение данных их файла)
+        {
+            List<GroupData> groups = new List<GroupData>();
+            string [] lines =  File.ReadAllLines(@"groups.csv");   // ReadAllLines, чтение все строчек файла
+            foreach (string l in lines)
+            {
+                string [] parts =  l.Split(','); //разбиение на части , до разделителя в ввиде запятой. Сохраняем набор частей 
+                groups.Add(new GroupData(parts[0]) //parts[0] название группы
+                { 
+                    Header = parts[1],
+                    Footer = parts[2]
+                }); // данные прочитаны из файла и помещены в список
+            }
+            return groups; 
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromXmlFile() //метод для создания групп с рандомными данными из ФАЙЛА XML (чтнение данных их файла)
+        {
+            List<GroupData> groups = new List<GroupData>();
+
+            return (List<GroupData>) //приведение типа
+                new XmlSerializer(typeof(List<GroupData>)) 
+                .Deserialize(new StreamReader(@"groups.xml")); //читаем данные типа List<GroupData> из файла
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromJsonFile() //метод для создания групп с рандомными данными из ФАЙЛА Json (чтнение данных их файла)
+        {
+           return JsonConvert.DeserializeObject<List<GroupData>>(
+                File.ReadAllText(@"groups.json"));
+        }
+
+        [Test, TestCaseSource("GroupDataFromXmlFile")] //чтобы привязать тест к генератору , TestCaseSource - использование внешнего источника тестовых данных
 
         public void GroupCreationTest(GroupData group) //добавили параметр
         {
@@ -53,32 +88,49 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroupList, newGroupList);
         }
 
- /*       [Test] Теперь пустые тестовые даные будут генерироваться в генераторе 
-          public void EmptyGroupCreationTest()
-        {
-           // int countP;
-          //  int countL;
-   
-            GroupData group = new GroupData("");
-            group.Header = "";
-            group.Footer = "";
+        [Test, TestCaseSource("GroupDataFromJsonFile")] //чтобы привязать тест к генератору , TestCaseSource - использование внешнего источника тестовых данных
 
-            // countP = app.Groups.CountingGroups(); // подсчет до создания
+        public void GroupCreationTest2(GroupData group) //добавили параметр
+        {          
             List<GroupData> oldGroupList = app.Groups.GetGroupList();
             app.Groups.Create(group);
             Assert.AreEqual(oldGroupList.Count + 1, app.Groups.GetGroupCount());
+            
             List<GroupData> newGroupList = app.Groups.GetGroupList();
 
             oldGroupList.Add(group);
             oldGroupList.Sort();
             newGroupList.Sort();
-            // countL = app.Groups.CountingGroups();// подсчет до создания
 
-            // Assert.AreEqual(countP, countL - 1); //группа создана, если список групп увеличился
             Assert.AreEqual(oldGroupList.Count, newGroupList.Count);
             Assert.AreEqual(oldGroupList, newGroupList);
-        }*/
-    
+        }
+        /*       [Test] Теперь пустые тестовые даные будут генерироваться в генераторе 
+                 public void EmptyGroupCreationTest()
+               {
+                  // int countP;
+                 //  int countL;
+
+                   GroupData group = new GroupData("");
+                   group.Header = "";
+                   group.Footer = "";
+
+                   // countP = app.Groups.CountingGroups(); // подсчет до создания
+                   List<GroupData> oldGroupList = app.Groups.GetGroupList();
+                   app.Groups.Create(group);
+                   Assert.AreEqual(oldGroupList.Count + 1, app.Groups.GetGroupCount());
+                   List<GroupData> newGroupList = app.Groups.GetGroupList();
+
+                   oldGroupList.Add(group);
+                   oldGroupList.Sort();
+                   newGroupList.Sort();
+                   // countL = app.Groups.CountingGroups();// подсчет до создания
+
+                   // Assert.AreEqual(countP, countL - 1); //группа создана, если список групп увеличился
+                   Assert.AreEqual(oldGroupList.Count, newGroupList.Count);
+                   Assert.AreEqual(oldGroupList, newGroupList);
+               }*/
+
 
         [Test]
         public void BadNameGroupCreationTest()

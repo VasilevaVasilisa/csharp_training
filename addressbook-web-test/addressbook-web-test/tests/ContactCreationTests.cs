@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace WebAddressbookTests
@@ -26,7 +30,22 @@ namespace WebAddressbookTests
             return contacts;
         }
 
-        [Test, TestCaseSource("RandomContactDataProvider")]
+        public static IEnumerable<ContactDate> GroupDataFromXmlFile() //метод для создания групп с рандомными данными из ФАЙЛА XML (чтнение данных их файла)
+        {
+            List<ContactDate> groups = new List<ContactDate>();
+
+            return (List<ContactDate>) //приведение типа
+                new XmlSerializer(typeof(List<ContactDate>))
+                .Deserialize(new StreamReader(@"contacts.xml")); //читаем данные типа List<ContactDate> из файла
+        }
+
+        public static IEnumerable<ContactDate> GroupDataFromJsonFile() //метод для создания контактов с рандомными данными из ФАЙЛА Json (чтнение данных их файла)
+        {
+            return JsonConvert.DeserializeObject<List<ContactDate>>(
+                 File.ReadAllText(@"contacts.json"));
+        }
+
+        [Test, TestCaseSource("GroupDataFromXmlFile")]
         public void ContactCreationTest(ContactDate contact)
         {
     /*        int countP;
@@ -48,6 +67,22 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldContactsList.Count , newContactsList.Count);
             Assert.AreEqual(oldContactsList, newContactsList);
             //    Assert.AreEqual(countP, countL - 1); //проверка что контакт создался, если список контактов увеличился
+        }
+
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
+        public void ContactCreationTest2(ContactDate contact)
+        {          
+            List<ContactDate> oldContactsList = app.Contacts.GetContactList();
+            app.Contacts.Create(contact);
+            Assert.AreEqual(oldContactsList.Count + 1, app.Contacts.GetContactCount());
+            List<ContactDate> newContactsList = app.Contacts.GetContactList();
+           
+            oldContactsList.Add(contact);
+            oldContactsList.Sort();
+            newContactsList.Sort();
+
+            Assert.AreEqual(oldContactsList.Count, newContactsList.Count);
+            Assert.AreEqual(oldContactsList, newContactsList);          
         }
 
     }
