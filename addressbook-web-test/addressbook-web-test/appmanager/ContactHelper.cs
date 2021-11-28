@@ -250,8 +250,8 @@ namespace WebAddressbookTests
             InitContactDetails(0);
             string details = driver.FindElement(By.CssSelector("div#content")).Text;
 
-              details  =  details.Replace(" ", "").Replace("H:", "").Replace("M:", "").Replace("W:", "").
-                        Replace("-", "").Replace("(", "").Replace(")", "").Trim();
+           /*   details  =  details.Replace(" ", "").Replace("H:", "").Replace("M:", "").Replace("W:", "").
+                        Replace("-", "").Replace("(", "").Replace(")", "").Trim();*/
 
             return details;
         }

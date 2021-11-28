@@ -32,7 +32,11 @@ namespace WebAddressbookTests
         {
             ContactDate fromTable = app.Contacts.GetContactInformationFromTable(0);
             string infoDetails = app.Contacts.GetContactInformationFromDetailsPage(0);
-            string infoTable = (fromTable.Firstname + fromTable.Lastname).Replace(" ", "") + "\r\n"
+
+            infoDetails =  infoDetails.Replace(" ", "").Replace("H:", "").Replace("M:", "").Replace("W:", "").
+                        Replace("-", "").Replace("(", "").Replace(")", "").Trim(); 
+
+             string infoTable = (fromTable.Firstname + fromTable.Lastname).Replace(" ", "") + "\r\n"
                  + fromTable.Address + "\r\n" + "\r\n" + fromTable.AllPhones + "\r\n" + "\r\n" + fromTable.AllEmails;
             infoTable.Trim();
 
@@ -47,8 +51,9 @@ namespace WebAddressbookTests
             string infoDetails = app.Contacts.GetContactInformationFromDetailsPage(0);
             ContactDate fromForm = app.Contacts.GetContactInformationFromEditForm(0);
 
-            string infoForm = ((fromForm.Firstname + fromForm.Lastname).Replace(" ", "") + "\r\n"
-                + fromForm.Address + "\r\n" + "\r\n" + fromForm.AllPhones + "\r\n" + "\r\n" + fromForm.AllEmails).Trim();
+            string infoForm = fromForm.Firstname +" "+ fromForm.Lastname + "\r\n"
+                + fromForm.Address + "\r\n" + "\r\n" + "H: "+ fromForm.HomeTel + "\r\n" + "M: " + fromForm.Mobile + "\r\n"
+               + "W: " + fromForm.WorkTel + "\r\n" + "\r\n" + fromForm.Email + "\r\n" + fromForm.Email2 + "\r\n" + fromForm.Email3;
 
             Assert.AreEqual(infoDetails, infoForm); // проверка соответсвия страницы с детальной информацией с формой редактирования 
         }
