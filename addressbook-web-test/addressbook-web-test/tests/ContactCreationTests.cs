@@ -85,5 +85,24 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldContactsList, newContactsList);          
         }
 
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;// запоминаем текущее время
+            List<ContactDate> fromUi = app.Contacts.GetContactList(); //список полученный из пользовательского интерфейса
+            DateTime end = DateTime.Now; //время когда получили список
+            System.Console.Out.WriteLine(end.Subtract(start)); // выводим разницу между началом и концом работы 
+
+            start = DateTime.Now;
+            /* using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
+             {
+                 List<GroupData> fromDb = (from g in db.Groups select g).ToList(); //список полученный из БД
+             }*/ //Перенесли в метод GetAll в GroupData
+
+            // db.Close();  используем using, чтобы бд закрывалась автоматически
+            List<ContactDate> fromDb = ContactDate.GetAll();
+            end = DateTime.Now;
+            System.Console.Out.WriteLine(end.Subtract(start));
+        }
     }
 }

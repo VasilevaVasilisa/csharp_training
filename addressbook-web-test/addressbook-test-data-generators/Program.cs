@@ -14,7 +14,7 @@ namespace addressbook_test_data_generators
         {
            int count = Convert.ToInt32(args[0]); // args[0] параметр в который передаем количество тестовых данных, которые будут генериться
            StreamWriter writer = new StreamWriter(args[1]); // объект ? Записывает строки в файл, args[1] - передаем название файла
-           string format = args[3]; //передаем формат файла 
+           string format = args[2]; //передаем формат файла 
 
            List<GroupData> groups = new List<GroupData>();
 
@@ -42,7 +42,7 @@ namespace addressbook_test_data_generators
             {
                 System.Console.Out.Write("Unrecognized format " + format);
             }
-            writer.Close();
+          //  writer.Close();
 
             // Для контактов
             List<ContactDate> contacts = new List<ContactDate>();

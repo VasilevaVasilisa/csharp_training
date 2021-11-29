@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
 using System.Xml;
+using System.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -150,6 +151,27 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(oldGroupList.Count, newGroupList.Count);
             Assert.AreEqual(oldGroupList, newGroupList);
+        }
+
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now ;// запоминаем текущее время
+            List<GroupData> fromUi =  app.Groups.GetGroupList(); //список полученный из пользовательского интерфейса
+            DateTime end = DateTime.Now; //время когда получили список
+            System.Console.Out.WriteLine(end.Subtract(start)); // выводим разницу между началом и концом работы 
+
+            start = DateTime.Now;
+            /* using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
+             {
+                 List<GroupData> fromDb = (from g in db.Groups select g).ToList(); //список полученный из БД
+             }*/ //Перенесли в метод GetAll в GroupData
+
+            // db.Close();  используем using, чтобы бд закрывалась автоматически
+            List<GroupData> fromDb = GroupData.GetAll();
+            end = DateTime.Now;
+            System.Console.Out.WriteLine(end.Subtract(start));
         }
     }
 
