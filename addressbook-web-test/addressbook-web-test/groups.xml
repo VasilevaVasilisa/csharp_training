@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfGroupData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GroupData>
+    <Name>babababb</Name>
+    <Header>ab</Header>
+    <Footer>abbba</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>bbabba</Name>
+    <Header>aabbabaab</Header>
+    <Footer>aaaaa</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>bb</Name>
+    <Header>abbaabbba</Header>
+    <Footer>aaabaaabb</Footer>
+  </GroupData>
+</ArrayOfGroupData>

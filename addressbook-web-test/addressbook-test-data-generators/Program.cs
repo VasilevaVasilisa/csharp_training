@@ -15,8 +15,76 @@ namespace addressbook_test_data_generators
            int count = Convert.ToInt32(args[0]); // args[0] параметр в который передаем количество тестовых данных, которые будут генериться
            StreamWriter writer = new StreamWriter(args[1]); // объект ? Записывает строки в файл, args[1] - передаем название файла
            string format = args[2]; //передаем формат файла 
+           string whatCreate = args[3]; //для чего будем генерировать данные, для групп или контактов
 
-           List<GroupData> groups = new List<GroupData>();
+            if (whatCreate == "group")
+            {
+                List<GroupData> groups = new List<GroupData>();
+
+                for (int i = 0; i < count; i++)
+                {
+                    groups.Add(new GroupData(TestBase.GeneratorRandomString(10))
+                    {
+                        Header = TestBase.GeneratorRandomString(10),//генерация случайных строк
+                        Footer = TestBase.GeneratorRandomString(10)
+                    });
+                }
+                if (format == "csv")
+                {
+                    writeGroupsToCsvFile(groups, writer);
+                }
+                else if (format == "xml")
+                {
+                    writeGroupsToXmlFile(groups, writer);
+                }
+                else if (format == "json")
+                {
+                    writeGroupsToJsonFile(groups, writer);
+                }
+                else
+                {
+                    System.Console.Out.Write("Unrecognized format " + format);
+                }
+                writer.Close();
+            }
+
+            else if (whatCreate == "contact")
+            {
+                List<ContactDate> contacts = new List<ContactDate>();
+
+                for (int i = 0; i < count; i++)
+                {
+                    contacts.Add(new ContactDate(TestBase.GeneratorRandomString(10), TestBase.GeneratorRandomString(10))
+                    {
+                        // Address = TestBase.GeneratorRandomString(10) // Оставила два параметра, чтобы наглядно отличались файлы от групп
+                    });
+                }
+
+                if (format == "csv")
+                {
+                    writeContactsToCsvFile(contacts, writer);
+                }
+                else if (format == "xml")
+                {
+                    writeContactsToXmlFile(contacts, writer);
+
+                }
+                else if (format == "json")
+                {
+                    writeContactsToJsonFile(contacts, writer);
+                }
+                else
+                {
+                    System.Console.Out.Write("Unrecognized format " + format);
+                }
+                writer.Close();
+            }
+            else
+            {
+                System.Console.Out.Write("Unrecognized whatCreate " + whatCreate);
+            }
+        
+        /*   List<GroupData> groups = new List<GroupData>();
 
             for(int i = 0; i < count; i++)
             {
@@ -42,22 +110,26 @@ namespace addressbook_test_data_generators
             {
                 System.Console.Out.Write("Unrecognized format " + format);
             }
-            writer.Close();
+            writer.Close();*/
 
             // Для контактов
-            List<ContactDate> contacts = new List<ContactDate>();
+         /*    List<ContactDate> contacts = new List<ContactDate>();
 
             for (int i = 0; i < count; i++)
             {
                 contacts.Add(new ContactDate(TestBase.GeneratorRandomString(10), TestBase.GeneratorRandomString(10))
                 {
-                    Address = TestBase.GeneratorRandomString(10)
+                   // Address = TestBase.GeneratorRandomString(10)
                 });
             }
 
               if (format == "xml")
             {
                 writeContactsToXmlFile(contacts, writer);
+            }
+              else if(format == "csv")
+            {
+                writeContactsToCsvFile(contacts, writer);
             }
             else if (format == "json")
             {
@@ -67,7 +139,7 @@ namespace addressbook_test_data_generators
             {
                 System.Console.Out.Write("Unrecognized format " + format);
             }
-            writer.Close();
+            writer.Close();*/
         }
 
         static void writeGroupsToCsvFile(List<GroupData> groups, StreamWriter writer)  //функция записи в файл csv, что записываем - список элементов GroupData , куда записываем - writer(открытый файл)
@@ -89,9 +161,16 @@ namespace addressbook_test_data_generators
            writer.Write(JsonConvert.SerializeObject(groups, Newtonsoft.Json.Formatting.Indented)); //Возвращается строка, которую записываем в файл. Применение формата 
         }
 
-      
-        // Для контактов
 
+        // Для контактов
+        static void writeContactsToCsvFile(List<ContactDate> contacts, StreamWriter writer)  //функция записи в файл csv, что записываем - список элементов GroupData , куда записываем - writer(открытый файл)
+        {
+            foreach (ContactDate contact in contacts)
+            {
+                writer.WriteLine(String.Format("${0},${1}", // Формат для указывания значений через запятую
+                    contact.Firstname, contact.Lastname));
+            }
+        }
         static void writeContactsToXmlFile(List<ContactDate> contacts, StreamWriter writer)
         {
             new XmlSerializer(typeof(List<ContactDate>)).Serialize(writer, contacts);

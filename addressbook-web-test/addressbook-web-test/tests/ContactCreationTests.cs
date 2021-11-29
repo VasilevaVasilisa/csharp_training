@@ -100,7 +100,7 @@ namespace WebAddressbookTests
              }*/ //Перенесли в метод GetAll в GroupData
 
             // db.Close();  используем using, чтобы бд закрывалась автоматически
-            List<ContactDate> fromDb = ContactDate.GetAll();
+           // List<ContactDate> fromDb = ContactDate.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
         }

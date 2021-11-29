@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfContactDate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ContactDate>
+    <Firstname>baa</Firstname>
+    <Lastname>aaaaa</Lastname>
+    <AllPhones />
+    <AllEmails />
+  </ContactDate>
+  <ContactDate>
+    <Firstname>a</Firstname>
+    <Lastname>baabb</Lastname>
+    <AllPhones />
+    <AllEmails />
+  </ContactDate>
+  <ContactDate>
+    <Firstname>baaaaaaa</Firstname>
+    <Lastname>aaba</Lastname>
+    <AllPhones />
+    <AllEmails />
+  </ContactDate>
+</ArrayOfContactDate>

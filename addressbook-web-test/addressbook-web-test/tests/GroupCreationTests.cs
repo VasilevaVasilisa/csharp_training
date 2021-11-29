@@ -169,7 +169,7 @@ namespace WebAddressbookTests
              }*/ //Перенесли в метод GetAll в GroupData
 
             // db.Close();  используем using, чтобы бд закрывалась автоматически
-            List<GroupData> fromDb = GroupData.GetAll();
+         //   List<GroupData> fromDb = GroupData.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
         }
