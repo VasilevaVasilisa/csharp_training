@@ -42,7 +42,7 @@ namespace addressbook_test_data_generators
             {
                 System.Console.Out.Write("Unrecognized format " + format);
             }
-          //  writer.Close();
+            writer.Close();
 
             // Для контактов
             List<ContactDate> contacts = new List<ContactDate>();
