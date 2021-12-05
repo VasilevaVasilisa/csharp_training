@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 { 
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase 
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactDate> RandomContactDataProvider() //метод для создания контактов с рандомными данными
         {
@@ -48,16 +48,17 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("GroupDataFromXmlFile")]
         public void ContactCreationTest(ContactDate contact)
         {
-    /*        int countP;
-            int countL;
-    */
-           // ContactDate contact = new ContactDate("Petr", "Petrov"); заменили на рандомное создание
+            /*        int countP;
+                    int countL;
+            */
+            // ContactDate contact = new ContactDate("Petr", "Petrov"); заменили на рандомное создание
 
             // countP = app.Contacts.CountingContacts(); //подсчет до создания
-            List<ContactDate> oldContactsList = app.Contacts.GetContactList();
+            // List<ContactDate> oldContactsList = app.Contacts.GetContactList(); // Получение списка с UI
+            List<ContactDate> oldContactsList = ContactDate.GetAll(); // Получение списка из БД
             app.Contacts.Create(contact);
             Assert.AreEqual(oldContactsList.Count + 1, app.Contacts.GetContactCount());
-            List<ContactDate> newContactsList = app.Contacts.GetContactList();
+            List<ContactDate> newContactsList = ContactDate.GetAll();
             // countL = app.Contacts.CountingContacts(); //подсчет после создания
 
             oldContactsList.Add(contact);
@@ -72,10 +73,10 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void ContactCreationTest2(ContactDate contact)
         {          
-            List<ContactDate> oldContactsList = app.Contacts.GetContactList();
+            List<ContactDate> oldContactsList = ContactDate.GetAll();
             app.Contacts.Create(contact);
             Assert.AreEqual(oldContactsList.Count + 1, app.Contacts.GetContactCount());
-            List<ContactDate> newContactsList = app.Contacts.GetContactList();
+            List<ContactDate> newContactsList = ContactDate.GetAll();
            
             oldContactsList.Add(contact);
             oldContactsList.Sort();
@@ -83,6 +84,23 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(oldContactsList.Count, newContactsList.Count);
             Assert.AreEqual(oldContactsList, newContactsList);          
+        }
+
+        [Test]
+        public void ContactCreationTest3()
+        {
+            ContactDate contact = new ContactDate("Petr", "Petrov");
+            List<ContactDate> oldContactsList = ContactDate.GetAll();
+            app.Contacts.Create(contact);
+            Assert.AreEqual(oldContactsList.Count + 1, app.Contacts.GetContactCount());
+            List<ContactDate> newContactsList = ContactDate.GetAll();
+
+            oldContactsList.Add(contact);
+            oldContactsList.Sort();
+            newContactsList.Sort();
+
+            Assert.AreEqual(oldContactsList.Count, newContactsList.Count);
+            Assert.AreEqual(oldContactsList, newContactsList);
         }
 
         [Test]
@@ -100,9 +118,10 @@ namespace WebAddressbookTests
              }*/ //Перенесли в метод GetAll в GroupData
 
             // db.Close();  используем using, чтобы бд закрывалась автоматически
-           // List<ContactDate> fromDb = ContactDate.GetAll();
+           List<ContactDate> fromDb = ContactDate.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
         }
+
     }
 }

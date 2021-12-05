@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebAddressbookTests
 {
-   // [Table(Name = "group_list")]  // привязка к таблице бд , group_list соответсвует таблице с группами
+    [Table(Name = "group_list")]  // привязка к таблице бд , group_list соответсвует таблице с группами
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
         public GroupData()
@@ -21,16 +21,16 @@ namespace WebAddressbookTests
         }
 
         // Для каждого свойства указываем привязку к столбцу 
-      //  [Column(Name = "group_name")]
+        [Column(Name = "group_name")]
         public string Name { get; set; } //поля создаются автоматически
 
-      //  [Column(Name = "group_header")]
+        [Column(Name = "group_header")]
         public string Header { get; set; }
 
-      //  [Column(Name = "group_footer")]
+        [Column(Name = "group_footer")]
         public string Footer { get; set; }
 
-      //  [Column(Name = "group_id"), PrimaryKey , Identity] //идентификатор
+        [Column(Name = "group_id"), PrimaryKey , Identity] //идентификатор
         public string Id { get; set; }
  
         public bool Equals(GroupData other)
@@ -62,13 +62,24 @@ namespace WebAddressbookTests
             return Name.CompareTo(other.Name);
         }
 
-    /*    public static List<GroupData> GetAll() //вспомогательный метод
+        public static List<GroupData> GetAll() //вспомогательный метод
         {
             using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
             {
                return (from g in db.Groups select g).ToList(); //список полученный из БД
             }
-        }*/
+        }
+
+        public List<ContactDate> GetContacts()
+        {
+            using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
+            {
+                return (from c in db.Contacts 
+                        from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id 
+                        && c.Deprecated == "0000-00-00 00:00:00")
+                        select c).Distinct().ToList(); //список полученный из БД
+            }
+        }
 
     }
 }

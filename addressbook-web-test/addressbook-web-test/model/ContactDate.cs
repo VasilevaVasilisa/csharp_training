@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebAddressbookTests 
 {
-  //  [Table(Name = "addressbook")]  // привязка к таблице бд , group_list соответсвует таблице с контактами
+    [Table(Name = "addressbook")]  // привязка к таблице бд , group_list соответсвует таблице с контактами
     public class ContactDate : IEquatable<ContactDate>, IComparable<ContactDate>
     {
 
@@ -27,69 +27,69 @@ namespace WebAddressbookTests
         }
 
         // Для каждого свойства указываем привязку к столбцу 
-      //  [Column(Name = "firstname")]
+        [Column(Name = "firstname")]
         public string Firstname { get; set; }
 
-      //  [Column(Name = "lastname")]
+        [Column(Name = "lastname")]
         public string Lastname { get; set; }
 
-    //    [Column(Name = "middlename")]
+        [Column(Name = "middlename")]
         public string Middlename { get; set; }
 
-      //  [Column(Name = "nickname")]
+        [Column(Name = "nickname")]
         public string Nickname { get; set; }
 
         /*public string Photo  { get; set; }*/
        
-     //   [Column(Name = "title")]
+        [Column(Name = "title")]
         public string Title { get; set; }
 
-     //   [Column(Name = "company")]
+        [Column(Name = "company")]
         public string Company { get; set; }
 
-    //    [Column(Name = "address")]
+        [Column(Name = "address")]
         public string Address { get; set; }
 
-    //    [Column(Name = "home")]
+        [Column(Name = "home")]
         public string HomeTel { get; set; }
 
-     //   [Column(Name = "mobile")]
+        [Column(Name = "mobile")]
         public string Mobile { get; set; }
 
-    //    [Column(Name = "work")]
+        [Column(Name = "work")]
         public string WorkTel { get; set; }
 
-    //    [Column(Name = "fax")]
+        [Column(Name = "fax")]
         public string Fax { get; set; }
 
-    //    [Column(Name = "email")]
+        [Column(Name = "email")]
         public string Email { get; set; }
 
-    //    [Column(Name = "email2")]
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
 
-    //    [Column(Name = "email3")]
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
 
-    //    [Column(Name = "homepage")]
+        [Column(Name = "homepage")]
         public string Homepage { get; set; }
 
-     //   [Column(Name = "bday")]
+        [Column(Name = "bday")]
         public string BirthDay { get; set; }
 
-    //    [Column(Name = "bmonth")]
+        [Column(Name = "bmonth")]
         public string BirthMonth { get; set; }
 
-    //    [Column(Name = "byear")]
+        [Column(Name = "byear")]
         public string BirthYear { get; set; }
 
-    //    [Column(Name = "aday")]
+        [Column(Name = "aday")]
         public string AnniversaryDay { get; set; }
 
-    //    [Column(Name = "amonth")]
+        [Column(Name = "amonth")]
         public string AnniversaryMonth { get; set; }
 
-    //    [Column(Name = "ayear")]
+        [Column(Name = "ayear")]
         public string AnniversaryYear { get; set; }
 
         public string AllPhones 
@@ -130,7 +130,7 @@ namespace WebAddressbookTests
             }
         }
 
-     //   [Column(Name = "id") , PrimaryKey, Identity]
+       [Column(Name = "id") , PrimaryKey]
         public string Id { get; set; }
 
        
@@ -146,14 +146,17 @@ namespace WebAddressbookTests
             }
         }
 
-     //   [Column(Name = "address2")]
+       [Column(Name = "address2")]
         public string Address2 { get; set; }
 
-    //    [Column(Name = "phone2")]
+        [Column(Name = "phone2")]
         public string Phone2 { get; set; }
 
-    //    [Column(Name = "notes")]
+        [Column(Name = "notes")]
         public string Notes { get; set; }
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }  //Свойство для поля в Бд , которое содержит дату, удаленного контакта 
 
         public bool Equals(ContactDate other)
         {
@@ -206,12 +209,14 @@ namespace WebAddressbookTests
          //  return Regex.Replace(phone, "[ -()]","") + "\r\n";
         }
 
-     /*   public static List<ContactDate> GetAll() //вспомогательный метод
+        public static List<ContactDate> GetAll() //вспомогательный метод
         {
             using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
             {
-                return (from c in db.Contacts select c).ToList(); //список полученный из БД
+                return (from c in db.Contacts.Where(x => x.Deprecated == "0000-00-00 00:00:00") select c).ToList(); //список полученный из БД
+                // WHERE () анонимная функция(лямбда выражение), функция которая применяется к каждому элементу, x это ее параметр , после => тело функции
             }
-        }*/
+        }
+
     }
 }

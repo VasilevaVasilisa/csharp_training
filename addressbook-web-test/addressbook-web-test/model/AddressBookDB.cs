@@ -13,5 +13,6 @@ namespace WebAddressbookTests
         public AddressBookDB() : base("AddressBook") { } // конструктор AddressBookDB обращается к конструктору базового класса, в качестве параметра передаем AddressBook из app.config
         public ITable<GroupData> Groups { get { return GetTable<GroupData>(); } } //спец. метод который возвращает таблицу данных + свойство, геттер извлекает данные 
         public ITable<ContactDate> Contacts { get { return GetTable<ContactDate>(); } }
+        public ITable<GroupContactRelation> GCR { get { return GetTable<GroupContactRelation>(); } }
     }
 }

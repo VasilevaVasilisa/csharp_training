@@ -33,7 +33,8 @@ namespace WebAddressbookTests
            
             //ContactDate newData = new ContactDate("Maria", "Petrova"); 
 
-            List<ContactDate> oldContactsList = app.Contacts.GetContactList();
+           // List<ContactDate> oldContactsList = app.Contacts.GetContactList();
+            List<ContactDate> oldContactsList = ContactDate.GetAll(); // Получение списка из БД
 
             if (oldContactsList.Count == 0)
             {
@@ -48,10 +49,53 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(oldContactsList.Count, app.Contacts.GetContactCount());
 
-            List<ContactDate> newContactsList = app.Contacts.GetContactList();
+            List<ContactDate> newContactsList = ContactDate.GetAll(); // Получение списка из БД
 
             oldContactsList[0].Firstname = newData.Firstname;
             oldContactsList[0].Lastname = newData.Lastname;    
+
+            oldContactsList.Sort();
+            newContactsList.Sort();
+
+            Assert.AreEqual(oldContactsList.Count, newContactsList.Count);
+            Assert.AreEqual(oldContactsList, newContactsList);
+
+            foreach (ContactDate contact in newContactsList)
+            {
+                if (contact.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.Firstname, contact.Firstname);
+                    Assert.AreEqual(newData.Lastname, contact.Lastname);
+
+                }
+            }
+
+        }
+        [Test]
+        public void ContactModificationTest2() //тест удаление контакта по id + бд
+        {
+
+            ContactDate newData = new ContactDate("Maria", "Petrova"); 
+
+            List<ContactDate> oldContactsList = ContactDate.GetAll(); // Получение списка из БД
+
+            if (oldContactsList.Count == 0)
+            {
+                ContactDate contact = new ContactDate("Petr", "Petrov");
+                app.Contacts.Create(contact);
+                oldContactsList.Add(contact);
+            }
+
+            ContactDate oldData = oldContactsList[0];
+
+            app.Contacts.Modify(oldData, newData);
+
+            Assert.AreEqual(oldContactsList.Count, app.Contacts.GetContactCount());
+
+            List<ContactDate> newContactsList = ContactDate.GetAll(); // Получение списка из БД
+
+            oldContactsList[0].Firstname = newData.Firstname;
+            oldContactsList[0].Lastname = newData.Lastname;
 
             oldContactsList.Sort();
             newContactsList.Sort();

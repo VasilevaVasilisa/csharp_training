@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupDataProvider() //метод для создания групп с рандомными данными
         {
@@ -66,19 +66,23 @@ namespace WebAddressbookTests
 
         public void GroupCreationTest(GroupData group) //добавили параметр
         {
-           /* int countP;
-            int countL;
-           */
-       /*     GroupData group = new GroupData("group2");
-            group.Header = "ddd";
-            group.Footer = "sss";*/
+            /* int countP;
+             int countL;
+            */
+            /*     GroupData group = new GroupData("group2");
+                 group.Header = "ddd";
+                 group.Footer = "sss";*/
 
-          // countP = app.Groups.CountingGroups();
-           List<GroupData> oldGroupList = app.Groups.GetGroupList();
-           app.Groups.Create(group);
+            // countP = app.Groups.CountingGroups();
+            // List<GroupData> oldGroupList = app.Groups.GetGroupList(); получение списка с UI
+
+            List<GroupData> oldGroupList = GroupData.GetAll();// получение списка с БД
+
+            app.Groups.Create(group);
            Assert.AreEqual(oldGroupList.Count + 1, app.Groups.GetGroupCount());
             // countL =  app.Groups.CountingGroups();
-           List<GroupData> newGroupList = app.Groups.GetGroupList();
+
+           List<GroupData> newGroupList = GroupData.GetAll();
 
             oldGroupList.Add(group);
             oldGroupList.Sort();
@@ -153,6 +157,28 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroupList, newGroupList);
         }
 
+        [Test] //Тест для проверки создания группы , со списком групп из БД(Тест 1 и 2 не работают из среды разработки)
+
+        public void GroupCreationTest3() { 
+
+            GroupData group = new GroupData("group2");
+                 group.Header = "ddd";
+                 group.Footer = "sss";
+
+            List<GroupData> oldGroupList = GroupData.GetAll();
+            app.Groups.Create(group);
+            Assert.AreEqual(oldGroupList.Count + 1, app.Groups.GetGroupCount());
+          
+            List<GroupData> newGroupList = GroupData.GetAll();
+
+            oldGroupList.Add(group);
+            oldGroupList.Sort();
+            newGroupList.Sort();
+ 
+            Assert.AreEqual(oldGroupList.Count, newGroupList.Count);
+            Assert.AreEqual(oldGroupList, newGroupList);
+        }
+
 
         [Test]
         public void TestDBConnectivity()
@@ -169,9 +195,21 @@ namespace WebAddressbookTests
              }*/ //Перенесли в метод GetAll в GroupData
 
             // db.Close();  используем using, чтобы бд закрывалась автоматически
-         //   List<GroupData> fromDb = GroupData.GetAll();
+            List<GroupData> fromDb = GroupData.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
+        }
+        [Test]
+        public void TestDBConnectivity2() //тест - проверка получения списка контактов из группы
+        {
+           // GroupData.GetAll()[0].GetContacts(); //получение списка контактов из группы
+
+            foreach(ContactDate contact in GroupData.GetAll()[0].GetContacts())
+            {
+                System.Console.Out.WriteLine(contact);
+            }
+
+
         }
     }
 
