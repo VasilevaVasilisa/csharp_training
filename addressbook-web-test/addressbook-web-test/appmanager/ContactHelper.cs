@@ -144,14 +144,9 @@ namespace WebAddressbookTests
 
         public ContactHelper InitContactModification(string id) 
         {
-          /*  driver.FindElement(By.Id(id).FindElement(By.TagName("td"))[7]
-               .FindElement(By.TagName("a")).Click());*/
-
-           // driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "' and img[@alt='Edit']]")).Click();
-            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']/td[8]/a/img")).Click();
-            /* driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']"))
-                 .FindElements(By.TagName("td"))[7].FindElement(By.TagName("a")).Click();*/
-
+          //  driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']//td[8]/a/img")).Click();
+            driver.FindElement(By.XPath($"//input[@name='selected[]' and @value='{id}']/../..//td[8]/a/img")).Click();
+            
             return this;
         }
 
