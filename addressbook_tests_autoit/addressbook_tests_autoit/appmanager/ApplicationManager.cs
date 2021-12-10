@@ -23,7 +23,7 @@ namespace addressbook_tests_autoit
         }
         public void Stop()
         {
-            aux.ControlClick(WINTITLE, "", "WindowsForms10.Window.8.app.0.2c908d5"); //закрытие формы, третий параметр = уникальный идентификатор
+            aux.ControlClick(WINTITLE, "", "WindowsForms10.BUTTON.app.0.2c908d510"); //закрытие формы, третий параметр = уникальный идентификатор
         }
 
         public AutoItX3 Aux
