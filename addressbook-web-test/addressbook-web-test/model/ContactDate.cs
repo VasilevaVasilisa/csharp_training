@@ -208,7 +208,6 @@ namespace WebAddressbookTests
            return parameters.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n"; //замена символов 
          //  return Regex.Replace(phone, "[ -()]","") + "\r\n";
         }
-
         public static List<ContactDate> GetAll() //вспомогательный метод
         {
             using (AddressBookDB db = new AddressBookDB()) // установление подключения к бд
