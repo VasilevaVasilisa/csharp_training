@@ -356,6 +356,6 @@ namespace WebAddressbookTests
         public void SelectGroupFilter(string name)
         {
             new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
-        }
+        }   
     }
 }

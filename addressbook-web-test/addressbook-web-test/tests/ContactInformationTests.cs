@@ -59,6 +59,7 @@ namespace WebAddressbookTests
             string email;
             string email2;
             string email3;
+            string allphonestrue = "";
 
             if (fromForm.Firstname == null || fromForm.Firstname == "") 
             {
@@ -94,7 +95,7 @@ namespace WebAddressbookTests
              else
              {
               
-                homeTel = "H: " + fromForm.HomeTel + "\r\n";
+                homeTel = "\r\n" + "H: " + fromForm.HomeTel;
              }
 
              if (fromForm.Mobile == null || fromForm.Mobile == "")
@@ -103,7 +104,7 @@ namespace WebAddressbookTests
              }
              else
              {
-                   mobile =  "M: " + fromForm.Mobile + "\r\n";
+                   mobile = "\r\n" + "M: " + fromForm.Mobile ;
              }
              if (fromForm.WorkTel == null || fromForm.WorkTel == "")
              {
@@ -111,8 +112,13 @@ namespace WebAddressbookTests
              }
              else
              {
-                 workTel = "W: " + fromForm.WorkTel + "\r\n";
+                 workTel = "\r\n" + "W: " + fromForm.WorkTel;
              }
+
+             if (fromForm.AllPhones != "")
+            {
+                allphonestrue = "\r\n";
+            }
 
              if (fromForm.Email == null || fromForm.Email == "" )
                 {
@@ -122,7 +128,7 @@ namespace WebAddressbookTests
                 }
              else
                 {
-                    email = fromForm.Email + "\r\n";
+                    email = "\r\n" + fromForm.Email;
 
                 }
              if (fromForm.Email2 == null || fromForm.Email2 == "")
@@ -131,7 +137,7 @@ namespace WebAddressbookTests
                 }
              else
                 {
-                     email2 = fromForm.Email2 + "\r\n";
+                     email2 = "\r\n" + fromForm.Email2;
 
                 }
              if (fromForm.Email3 == null || fromForm.Email3 == "")
@@ -140,10 +146,10 @@ namespace WebAddressbookTests
                 }
              else
                 {
-                     email3 = fromForm.Email3; 
+                     email3 = "\r\n" + fromForm.Email3; 
                 }
 
-            string infoForm = (firstname + lastname + "\r\n" + address + "\r\n" + homeTel + mobile + workTel + "\r\n" + email + email2 + email3).Trim();
+            string infoForm = (firstname + lastname + address + "\r\n" + homeTel + mobile + workTel + allphonestrue + email + email2 + email3).Trim();
           
             /* string infoForm =fromForm.Firstname +" "+ fromForm.Lastname + "\r\n"
              + fromForm.Address + "\r\n" + "\r\n" + "H: "+ fromForm.HomeTel + "\r\n" + "M: " + fromForm.Mobile + "\r\n"
