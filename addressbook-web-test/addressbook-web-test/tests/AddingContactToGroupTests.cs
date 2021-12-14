@@ -12,10 +12,27 @@ namespace WebAddressbookTests
         [Test]
         public void AddingContactToGroupTest()
         {
+           List<GroupData> oldGroupList = GroupData.GetAll();
+
+            if(oldGroupList.Count == 0)
+            {
+                GroupData group1 = new GroupData("group4");
+                app.Groups.Create(group1);
+                oldGroupList.Add(group1);
+            }
+
+            List<ContactDate> oldContactList = ContactDate.GetAll();
+            if(oldContactList.Count == 0)
+            {
+                ContactDate contact1 = new ContactDate("Petr", "Petrov");
+                app.Contacts.Create(contact1);
+                oldContactList.Add(contact1);
+            }
+
            GroupData group = GroupData.GetAll()[0];
            List<ContactDate> oldList = group.GetContacts(); // Список контактов которые входят в группу
-           ContactDate contact = ContactDate.GetAll().Except(oldList).First(); //Поиск контакта ,которого нет в заданной группе
 
+           ContactDate contact = ContactDate.GetAll().Except(oldList).FirstOrDefault(); //Поиск контакта ,которого нет в заданной группе
 
             app.Contacts.AddContactToGroup(contact, group);
 
