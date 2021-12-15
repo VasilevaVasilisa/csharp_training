@@ -11,21 +11,23 @@ namespace addressbook_tests_autoit
 
         public List<GroupData> GetGroupList()
         {
-          List<GroupData> list = new List<GroupData>();
-
-          OpenGroupsDialogue();
-          string  count =  aux.ControlTreeView("GROUPWINTITLE", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetItemCount","#0",""); // метод для получения элемента из окна, GetItemCount - подсчет
-         
-            for(int i = 0; i < int.Parse(count); i++)
+            List<GroupData> list = new List<GroupData>();
+            OpenGroupsDialogue();
+            string count = aux.ControlTreeView(
+                GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetItemCount", "#0", ""); // метод для получения элемента из окна, GetItemCount - подсчет
+            for (int i = 0; i < int.Parse(count); i++)
             {
-             string item = aux.ControlTreeView("GROUPWINTITLE", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetText", "#0|#"+i, ""); //Берем текст элемента
-             list.Add(new GroupData() { Name = item}); //Добавление группы в список групп
+                string item = aux.ControlTreeView(
+                GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetText", "#0|#" + i, ""); //Берем текст элемента
+                list.Add(new GroupData()
+                {
+                    Name = item   //Добавление группы в список групп
+                });
             }
 
-          CloseGroupsDialogue();
+            CloseGroupsDialogue();
 
-          return list;
-
+            return list;
         }
 
         public void Remove(int index)

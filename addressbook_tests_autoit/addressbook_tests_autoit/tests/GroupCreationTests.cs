@@ -19,7 +19,10 @@ namespace addressbook_tests_autoit
 
             app.Groups.Add(newGroup);
 
+            System.Threading.Thread.Sleep(1000);
+
             List<GroupData> newListGroups = app.Groups.GetGroupList();
+
             oldListGroups.Add(newGroup);
             oldListGroups.Sort();
             newListGroups.Sort();

@@ -16,6 +16,8 @@ namespace addressbook_tests_autoit
         {
             List<GroupData> oldListGroups = app.Groups.GetGroupList();
 
+            System.Threading.Thread.Sleep(1000);
+
             if(oldListGroups.Count == 0)
             {
                 GroupData newGroup = new GroupData() { Name = "test"};
@@ -28,7 +30,10 @@ namespace addressbook_tests_autoit
 
             app.Groups.Remove(0);
 
+            System.Threading.Thread.Sleep(1000);
+
             List<GroupData> newListGroups = app.Groups.GetGroupList();
+
             oldListGroups.RemoveAt(0);
 
             Assert.AreEqual(oldListGroups, newListGroups);

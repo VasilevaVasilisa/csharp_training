@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using System.Text.RegularExpressions;
 using OpenQA.Selenium.Firefox;
 
 namespace mantis_tests
@@ -18,11 +19,10 @@ namespace mantis_tests
             OpenRegistrationForm();
             FillRegistrationFormLogin(account);
             SubmitRegistrationLogin();
-        //    OpenPasswordPage();
-            FillRegistrationFormPassword();
-            SubmitRegistrationPassword();
-
-
+            String url = GetConfirmationUrl(account);
+            FillPasswordForm(url, account);
+            SubmitPasswordForm();
+           
         }
 
         public void OpenLoginPage()
@@ -36,26 +36,30 @@ namespace mantis_tests
         }
         public void SubmitRegistrationLogin()
         {
-            throw new NotImplementedException();
+            driver.FindElement(By.XPath("//input[@value='Зарегистрироваться']")).Click();
         }
         public void OpenRegistrationForm()
         {
-            driver.FindElements(By.CssSelector("span.bracket-link"))[0].Click();
+            driver.FindElement(By.LinkText("Зарегистрировать новую учётную запись")).Click();
         }
 
-        public void OpenPasswordPage()
+        public string GetConfirmationUrl(AccountDate account)
         {
-            throw new NotImplementedException();
+            String message = manager.Mail.GetLastMail(account);
+           Match match = Regex.Match(message, @"http://\S*");
+            return match.Value;
         }
 
-        public void FillRegistrationFormPassword()
+        public void FillPasswordForm(string url, AccountDate account)
         {
-            throw new NotImplementedException();
+            driver.Url = url;
+            driver.FindElement(By.Name("password")).SendKeys(account.Password);
+            driver.FindElement(By.Name("password_confirm")).SendKeys(account.Password);
         }
 
-        public void SubmitRegistrationPassword()
+        public void SubmitPasswordForm()
         {
-            throw new NotImplementedException();
+            driver.FindElement(By.XPath("//form[@id='account-update-form']/fieldset/span/button/span")).Click();
         }
 
     }
