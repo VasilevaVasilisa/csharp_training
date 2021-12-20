@@ -33,6 +33,13 @@ namespace WebAddressbookTests
            List<ContactDate> oldList = group.GetContacts(); // Список контактов которые входят в группу
 
            ContactDate contact = ContactDate.GetAll().Except(oldList).FirstOrDefault(); //Поиск контакта ,которого нет в заданной группе
+            if (contact == null)
+            {
+                ContactDate contact2 = new ContactDate("Maria", "Petrova");
+                app.Contacts.Create(contact2);
+                oldContactList.Add(contact2);
+                contact = ContactDate.GetAll().Except(oldList).FirstOrDefault();
+            }
 
             app.Contacts.AddContactToGroup(contact, group);
 

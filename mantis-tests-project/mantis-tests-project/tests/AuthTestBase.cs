@@ -14,8 +14,8 @@ namespace mantis_tests_project
         {
             app.Auth.Login(new AccountDate() 
             {
-              Username = "testUser1" , 
-              Password = "password" 
+              Username = "administrator" , 
+              Password = "root" 
               
             });
         }
