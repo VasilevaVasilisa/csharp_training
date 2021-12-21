@@ -20,16 +20,33 @@ namespace mantis_tests_project
             manager.Menu.GoToProjectManagementPage();
             SubmitCreatedNewProject();
             FillProjectForm(project);
-            SubmitAddProject();  
+            SubmitAddProject();
+            manager.Menu.GoToManagementPage();
+            manager.Menu.GoToProjectManagementPage();
         }
-      
-        internal void Remove(int index)
+
+      /*  public void Create(ProjectDate project , AccountDate account)
+        {
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            Mantis.ProjectData project_ = new Mantis.ProjectData() {name = project.Name };
+            client.mc_project_add(account.Username, account.Password);
+        }*/
+
+        public void Remove(int index)
         {
             manager.Menu.GoToManagementPage();
             manager.Menu.GoToProjectManagementPage();
             GoInProject(index);
             SubmitRemoveProject();
         }
+
+    /*    public void Remove(ProjectDate project)
+        {
+            manager.Menu.GoToManagementPage();
+            manager.Menu.GoToProjectManagementPage();
+            GoInProject(project.Id);
+            SubmitRemoveProject();
+        }*/
 
         public void GoInProject(int index)
         {
@@ -59,7 +76,7 @@ namespace mantis_tests_project
         }
 
 
-        List<ProjectDate> projectCash = null;
+  /*      List<ProjectDate> projectCash = null;
         public List<ProjectDate> GetProjectList()  // ????
         {
             if (projectCash == null)
@@ -78,7 +95,7 @@ namespace mantis_tests_project
                     string name = driver.FindElement(By.XPath("//div[@id='main-container']/div[2]/div[2]/div/div/div[2]/div[2]/div/div[2]/table/tbody/tr[" + i + "]/td/a")).Text;
                     
 
-                    ProjectDate project = new ProjectDate()
+                    ProjectDate project = new ProjectDate(element.Text)
                     {
                         Name = driver.FindElement(By.XPath("//div[@id='main-container']/div[2]/div[2]/div/div/div[2]/div[2]/div/div[2]/table/tbody/tr[" + i + "]/td/a")).Text
                     };
@@ -89,9 +106,24 @@ namespace mantis_tests_project
 
             }
             return new List<ProjectDate>(projectCash);
+        }*/
+
+        public List<ProjectDate> GetProjectList(AccountDate account)
+        {
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            Mantis.ProjectData[] project = client.mc_projects_get_user_accessible(account.Username, account.Password);
+            List<ProjectDate> projects = new List<ProjectDate>();
+
+            foreach(var proj in project)
+            {
+                ProjectDate project1 = new ProjectDate(proj.name);
+                projects.Add(project1);
+            }
+
+            return projects;
         }
 
-        public double GetGroupCount()
+        public double GetProjectCount()
         {
             return driver.FindElements(By.XPath("//div[@class='table-responsive']/table/tbody/tr/td/a")).Count;
         }

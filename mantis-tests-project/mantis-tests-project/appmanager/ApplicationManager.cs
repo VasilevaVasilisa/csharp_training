@@ -13,21 +13,21 @@ namespace mantis_tests_project
     public class ApplicationManager
     {
         protected IWebDriver driver;
-        protected string baseURL;
+        protected string baseURL;       
         protected LoginHelper loginHelper;
-
-        public object Login { get; private set; }
-        
+        private ProjectManagementHelper projectHelper;
+        private ManagementMenuHelper menuHelper;
 
         private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+        
 
         private ApplicationManager()
         {
             driver = new FirefoxDriver();
             baseURL = "http://localhost/mantisbt-2.25.2";
-            Login = new LoginHelper(this);
-            Project = new ProjectManagementHelper(this);
-            Menu = new ManagementMenuHelper(this);
+            loginHelper = new LoginHelper(this);
+            projectHelper = new ProjectManagementHelper(this);
+            menuHelper = new ManagementMenuHelper(this, baseURL);
             
         }
 
@@ -68,8 +68,21 @@ namespace mantis_tests_project
             }
         }
 
-        public ManagementMenuHelper Menu { get; private set; }
-        public ProjectManagementHelper Project { get; private set; }
+        public ManagementMenuHelper Menu 
+        {
+            get
+            {
+                return menuHelper;
+            }
+            
+        }
+        public ProjectManagementHelper Project 
+        { 
+            get 
+            {
+                return projectHelper;
+            } 
+        }
     }
 }
 

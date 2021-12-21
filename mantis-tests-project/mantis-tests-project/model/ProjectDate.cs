@@ -9,7 +9,12 @@ namespace mantis_tests_project
     public class ProjectDate : IEquatable<ProjectDate>, IComparable<ProjectDate>
     
     {
+        public ProjectDate (string name)
+        {
+            Name = name;
+        }
         public string Name { get; set; }
+        public object Id { get; internal set; }
 
         public int CompareTo(ProjectDate other)
         {

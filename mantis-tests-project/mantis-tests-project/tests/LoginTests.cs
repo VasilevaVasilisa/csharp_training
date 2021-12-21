@@ -17,8 +17,8 @@ namespace mantis_tests_project
             //prepare
             AccountDate account = new AccountDate()
             {
-                Username = "testUser1",
-                Password = "password"
+                Username = "administrator",
+                Password = "root"
             };
 
             //action

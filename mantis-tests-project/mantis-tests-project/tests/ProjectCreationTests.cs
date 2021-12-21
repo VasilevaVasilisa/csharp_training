@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 namespace mantis_tests_project
 {
     [TestFixture]
-   public class ProjectCrationTests : AuthTestBase
+   public class ProjectCreationTests : AuthTestBase
     {
         [Test]
         public void ProjectCreationTest()
         {
-            ProjectDate project = new ProjectDate()
+            AccountDate account = new AccountDate()
             {
-                Name = ""
+                Username = "administrator",
+                Password = "root"
             };
+            ProjectDate project = new ProjectDate("");
+            
 
-            List<ProjectDate> oldList = app.Project.GetProjectList();
+            List<ProjectDate> oldList = app.Project.GetProjectList(account);
 
             app.Project.Create(project);
-            List<ProjectDate> newList = app.Project.GetProjectList();
+
+            List<ProjectDate> newList = app.Project.GetProjectList(account);
 
             oldList.Add(project);
             oldList.Sort();

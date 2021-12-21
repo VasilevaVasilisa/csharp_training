@@ -11,8 +11,9 @@ namespace mantis_tests_project
         {
         private string baseURL;
 
-        public ManagementMenuHelper(ApplicationManager manager) : base(manager)
+        public ManagementMenuHelper(ApplicationManager manager, string baseURL) : base(manager)
         {
+            this.baseURL = baseURL;
         }
 
         public void OpenHomePage()
