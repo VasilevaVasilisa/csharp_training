@@ -25,12 +25,13 @@ namespace mantis_tests_project
             manager.Menu.GoToProjectManagementPage();
         }
 
-      /*  public void Create(ProjectDate project , AccountDate account)
+        public void Add(ProjectDate project , AccountDate account)
         {
             Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
-            Mantis.ProjectData project_ = new Mantis.ProjectData() {name = project.Name };
-            client.mc_project_add(account.Username, account.Password);
-        }*/
+            Mantis.ProjectData project_ = new Mantis.ProjectData();
+            project_.name = project.Name;
+            client.mc_project_add(account.Username, account.Password, project_);
+        }
 
         public void Remove(int index)
         {
